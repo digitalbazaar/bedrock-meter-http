@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/digitalbazaar/bedrock-meter-http",
   "dependencies": {
-    "@digitalbazaar/ezcap-express": "^3.0.1",
+    "@digitalbazaar/ezcap-express": "^4.1.0",
     "cors": "^2.8.5",
     "esm": "^3.2.25"
   },
