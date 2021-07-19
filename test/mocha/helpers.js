@@ -27,23 +27,27 @@ exports.clearHandlers = () => {
 
 exports.setCountHandlers = () => {
   handlers.setCreateHandler({
-    handler: () => {
+    handler: ({meter} = {}) => {
       HANDLER_COUNTS.create++;
+      return {meter};
     }
   });
   handlers.setUpdateHandler({
-    handler: () => {
+    handler: ({meter} = {}) => {
       HANDLER_COUNTS.update++;
+      return {meter};
     }
   });
   handlers.setRemoveHandler({
-    handler: () => {
+    handler: ({meter} = {}) => {
       HANDLER_COUNTS.remove++;
+      return {meter};
     }
   });
   handlers.setUseHandler({
-    handler: () => {
+    handler: ({meter} = {}) => {
       HANDLER_COUNTS.use++;
+      return {meter};
     }
   });
 };

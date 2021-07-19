@@ -11,7 +11,7 @@ describe('api', () => {
       clearHandlers();
     });
     // empty handler
-    const _h = () => {};
+    const _h = ({meter} = {}) => ({meter});
     it('setCreateHandler', async () => {
       handlers.setCreateHandler({handler: _h});
     });
