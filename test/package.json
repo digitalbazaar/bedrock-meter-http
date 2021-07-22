@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "bedrock": "^4.1.1",
+    "bedrock-did-io": "^4.0.0",
     "bedrock-express": "^4.0.0",
     "bedrock-https-agent": "^2.0.0",
     "bedrock-jsonld-document-loader": "^1.0.1",
