@@ -14,7 +14,7 @@
     "bedrock-express": "^4.0.0",
     "bedrock-https-agent": "^2.0.0",
     "bedrock-jsonld-document-loader": "^1.0.1",
-    "bedrock-meter": "digitalbazaar/bedrock-meter#initial2",
+    "bedrock-meter": "^1.0.0",
     "bedrock-meter-http": "file:..",
     "bedrock-mongodb": "^8.2.0",
     "bedrock-server": "^2.7.0",
