@@ -1,6 +1,6 @@
 # bedrock-meter-http ChangeLog
 
-## 2.0.0 - 2021-08-xx
+## 2.0.0 - 2021-08-31
 
 ### Changed
 - **BREAKING**: A a meter usage zcap is no longer generated, instead the
