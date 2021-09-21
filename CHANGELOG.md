@@ -3,7 +3,7 @@
 ## 3.0.0 - 2021-09-xx
 - **BREAKING**: A capability invocation via http-sigs is required to create
   meters. Access is controlled via the `config.createMeterAllowList`
-  configuration/
+  configuration.
 
 ## 2.0.0 - 2021-08-31
 
