@@ -1,7 +1,8 @@
 /*
  * Copyright (c) 2021 Digital Bazaar, Inc. All rights reserved.
  */
-const {clearHandlers, resetCountHandlers, HANDLER_COUNTS} =
+const {getAppIdentity} = require('bedrock-app-identity');
+const {clearHandlers, createMeter, resetCountHandlers} =
   require('./helpers');
 const {handlers} = require('bedrock-meter-http');
 
@@ -114,11 +115,34 @@ describe('api', () => {
     beforeEach(async () => {
       resetCountHandlers();
     });
-    it.skip('create', async () => {
-      // FIXME: post to `/meters`
+    it('create', async () => {
+      const {id: controller, keys} = getAppIdentity();
+      const invocationSigner = keys.capabilityInvocationKey.signer();
 
-      // FIXME: check result
-      HANDLER_COUNTS.create.should.equal(1);
+      const meter = {
+        controller,
+        product: {
+          // mock ID for webkms service product
+          id: 'urn:uuid:80a82316-e8c2-11eb-9570-10bf48838a41',
+        },
+        serviceId: 'mockWebKmsServiceId'
+      };
+
+      const {data, status} = await createMeter({meter, invocationSigner});
+      // meter service should return a response with status code `200`
+      status.should.equal(200);
+      // meter should send well formed response JSON body
+      should.exist(data);
+      should.exist(data.meter);
+      should.exist(data.meter.id);
+      should.exist(data.meter.controller);
+      should.exist(data.meter.serviceId);
+      should.exist(data.meter.product);
+      should.exist(data.meter.product.id);
+      // meter should return the same data used in the body in the request
+      data.meter.controller.should.equal(meter.controller);
+      data.meter.product.id.should.equal(meter.product.id);
+      data.meter.serviceId.should.equal(meter.serviceId);
     });
   });
 });
