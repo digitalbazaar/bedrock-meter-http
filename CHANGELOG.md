@@ -3,7 +3,7 @@
 ## 2.0.0 - 2021-08-31
 
 ### Changed
-- **BREAKING**: A a meter usage zcap is no longer generated, instead the
+- **BREAKING**: A meter usage zcap is no longer generated, instead the
   service ID associated with a meter is set as the root controller for the
   meter's usage endpoint. The service can then invoke (or delegate) the root
   zcap for that endpoint. This simplifies setup, and key and zcap management
