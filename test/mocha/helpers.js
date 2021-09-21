@@ -3,11 +3,27 @@
  */
 'use strict';
 
+const bedrock = require('bedrock');
 const database = require('bedrock-mongodb');
 const {handlers} = require('bedrock-meter-http');
+const {httpClient, DEFAULT_HEADERS} = require('@digitalbazaar/http-client');
+const {agent} = require('bedrock-https-agent');
+const {signCapabilityInvocation} = require('http-signature-zcap-invoke');
 
 exports.cleanDB = async () => {
   await database.collections['meter-meter'].deleteMany({});
+};
+
+exports.createMeter = async ({meter, invocationSigner}) => {
+  const meterService = `${bedrock.config.server.baseUri}/meters`;
+
+  const capability = `urn:zcap:root:${encodeURIComponent(meterService)}`;
+  const headers = await signCapabilityInvocation({
+    url: meterService, method: 'post', headers: DEFAULT_HEADERS, capability,
+    json: meter, invocationSigner, capabilityAction: 'write'
+  });
+
+  return httpClient.post(meterService, {agent, json: meter, headers});
 };
 
 const HANDLER_COUNTS = {

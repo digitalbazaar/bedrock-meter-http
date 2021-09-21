@@ -4,6 +4,7 @@
 'use strict';
 
 const bedrock = require('bedrock');
+require('bedrock-app-identity');
 require('bedrock-https-agent');
 require('bedrock-mongodb');
 const {handlers} = require('bedrock-meter-http');
