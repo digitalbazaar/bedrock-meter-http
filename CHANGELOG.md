@@ -1,6 +1,13 @@
 # bedrock-meter-http ChangeLog
 
+## 3.1.0 - 2021-09-21
+
+### Added
+- Implemented update meter config `POST /meters/:meterId`.
+
 ## 3.0.0 - 2021-09-21
+
+### Changed
 - **BREAKING**: A capability invocation via http-sigs is required to create
   meters. Access is controlled via the `config.meterCreationAllowList`
   configuration.
