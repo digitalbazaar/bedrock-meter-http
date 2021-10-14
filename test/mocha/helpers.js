@@ -26,7 +26,7 @@ exports.createMeter = async ({meter, invocationSigner}) => {
   return zcapClient.write({url: meterService, json: meter});
 };
 
-exports.updateMeter = async ({meter, invocationSigner}) => {
+exports.updateMeter = async ({meterId, meter, invocationSigner}) => {
   const zcapClient = new ZcapClient({
     agent,
     invocationSigner,
@@ -34,8 +34,18 @@ exports.updateMeter = async ({meter, invocationSigner}) => {
   });
 
   // create a meter
-  const {id: meterId} = meter;
+  if(!meterId) {
+    ({id: meterId} = meter);
+  }
+
   const meterService = `${bedrock.config.server.baseUri}/meters/${meterId}`;
+
+  if(!(Number.isInteger(meter.sequence) && meter.sequence >= 0)) {
+    throw new Error(`"meter.sequence" not found.`);
+  }
+
+  ++meter.sequence;
+
   return zcapClient.write({url: meterService, json: meter});
 };
 
