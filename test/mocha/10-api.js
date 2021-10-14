@@ -199,5 +199,110 @@ describe('api', () => {
       data.meter.product.id.should.equal(meter.product.id);
       data.meter.serviceId.should.equal(meter.serviceId);
     });
+
+    it('update failure (id mismatch)', async () => {
+      const {id: controller, keys} = getAppIdentity();
+      const invocationSigner = keys.capabilityInvocationKey.signer();
+
+      const meter = {
+        controller,
+        product: {
+          // mock ID for webkms service product
+          id: 'urn:uuid:80a82316-e8c2-11eb-9570-10bf48838a41',
+        },
+        serviceId: 'mockWebKmsServiceId'
+      };
+
+      const {data: meterData} = await createMeter({meter, invocationSigner});
+
+      let result;
+      let error;
+
+      const updatedController = 'updated-controller';
+      try {
+        result = await updateMeter({
+          meterId: meterData.meter.id,
+          meter: {
+            ...meterData.meter,
+            id: 'foobar',
+            controller: updatedController
+          },
+          invocationSigner
+        });
+      } catch(e) {
+        error = e;
+      }
+
+      should.exist(error);
+      should.not.exist(result);
+
+      should.exist(error.response);
+      should.exist(error.response.status);
+      should.exist(error.data);
+
+      const {data, response} = error;
+
+      // meter service should return a response with status code `400`
+      response.status.should.equal(400);
+
+      data.type.should.equal('DataError');
+      data.details.httpStatusCode.should.equal(400);
+      data.details.expectedMeterId.should.equal(meterData.meter.id);
+      data.details.actualMeterId.should.equal('foobar');
+    });
+
+    it('update failure (bad sequence)', async () => {
+      const {id: controller, keys} = getAppIdentity();
+      const invocationSigner = keys.capabilityInvocationKey.signer();
+
+      const meter = {
+        controller,
+        product: {
+          // mock ID for webkms service product
+          id: 'urn:uuid:80a82316-e8c2-11eb-9570-10bf48838a41',
+        },
+        serviceId: 'mockWebKmsServiceId'
+      };
+
+      const {data: meterData} = await createMeter({meter, invocationSigner});
+
+      let result;
+      let error;
+
+      const sequence = 10;
+      try {
+        await updateMeter({
+          meter: {
+            ...meterData.meter,
+            sequence
+          },
+          invocationSigner
+        });
+        result = await updateMeter({
+          meter: {
+            ...meterData.meter,
+            sequence
+          },
+          invocationSigner
+        });
+      } catch(e) {
+        error = e;
+      }
+
+      should.exist(error);
+      should.not.exist(result);
+
+      should.exist(error.response);
+      should.exist(error.response.status);
+      should.exist(error.data);
+
+      const {data, response} = error;
+
+      // meter service should return a response with status code `400`
+      response.status.should.equal(409);
+
+      data.type.should.equal('InvalidStateError');
+      data.details.httpStatusCode.should.equal(409);
+    });
   });
 });
