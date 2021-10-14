@@ -5,25 +5,38 @@
 
 const bedrock = require('bedrock');
 const database = require('bedrock-mongodb');
+const {Ed25519Signature2020} = require('@digitalbazaar/ed25519-signature-2020');
 const {handlers} = require('bedrock-meter-http');
-const {httpClient, DEFAULT_HEADERS} = require('@digitalbazaar/http-client');
 const {agent} = require('bedrock-https-agent');
-const {signCapabilityInvocation} = require('http-signature-zcap-invoke');
+const {ZcapClient} = require('@digitalbazaar/ezcap');
 
 exports.cleanDB = async () => {
   await database.collections['meter-meter'].deleteMany({});
 };
 
 exports.createMeter = async ({meter, invocationSigner}) => {
-  const meterService = `${bedrock.config.server.baseUri}/meters`;
-
-  const capability = `urn:zcap:root:${encodeURIComponent(meterService)}`;
-  const headers = await signCapabilityInvocation({
-    url: meterService, method: 'post', headers: DEFAULT_HEADERS, capability,
-    json: meter, invocationSigner, capabilityAction: 'write'
+  const zcapClient = new ZcapClient({
+    agent,
+    invocationSigner,
+    SuiteClass: Ed25519Signature2020
   });
 
-  return httpClient.post(meterService, {agent, json: meter, headers});
+  // create a meter
+  const meterService = `${bedrock.config.server.baseUri}/meters`;
+  return zcapClient.write({url: meterService, json: meter});
+};
+
+exports.updateMeter = async ({meter, invocationSigner}) => {
+  const zcapClient = new ZcapClient({
+    agent,
+    invocationSigner,
+    SuiteClass: Ed25519Signature2020
+  });
+
+  // create a meter
+  const {id: meterId} = meter;
+  const meterService = `${bedrock.config.server.baseUri}/meters/${meterId}`;
+  return zcapClient.write({url: meterService, json: meter});
 };
 
 const HANDLER_COUNTS = {
