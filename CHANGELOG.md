@@ -4,6 +4,7 @@
 
 ### Added
 - Implemented update meter config `POST /meters/:meterId`.
+- Implemented get meter config `GET /meters/:meterId`.
 
 ## 3.0.0 - 2021-09-21
 
