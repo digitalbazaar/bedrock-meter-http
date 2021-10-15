@@ -26,6 +26,18 @@ exports.createMeter = async ({meter, invocationSigner}) => {
   return zcapClient.write({url: meterService, json: meter});
 };
 
+exports.getMeter = async ({meterId, invocationSigner}) => {
+  const zcapClient = new ZcapClient({
+    agent,
+    invocationSigner,
+    SuiteClass: Ed25519Signature2020
+  });
+
+  const meterService = `${bedrock.config.server.baseUri}/meters/${meterId}`;
+
+  return zcapClient.read({url: meterService});
+};
+
 exports.updateMeter = async ({meterId, meter, invocationSigner}) => {
   const zcapClient = new ZcapClient({
     agent,

@@ -2,8 +2,9 @@
  * Copyright (c) 2021 Digital Bazaar, Inc. All rights reserved.
  */
 const {getAppIdentity} = require('bedrock-app-identity');
-const {clearHandlers, createMeter, resetCountHandlers, updateMeter} =
-  require('./helpers');
+const {
+  clearHandlers, createMeter, getMeter, resetCountHandlers, updateMeter
+} = require('./helpers');
 const {handlers} = require('bedrock-meter-http');
 
 describe('api', () => {
@@ -115,7 +116,7 @@ describe('api', () => {
     beforeEach(async () => {
       resetCountHandlers();
     });
-    it('create', async () => {
+    it('create successfully', async () => {
       const {id: controller, keys} = getAppIdentity();
       const invocationSigner = keys.capabilityInvocationKey.signer();
 
@@ -143,6 +144,52 @@ describe('api', () => {
       data.meter.controller.should.equal(meter.controller);
       data.meter.product.id.should.equal(meter.product.id);
       data.meter.serviceId.should.equal(meter.serviceId);
+    });
+  });
+
+  describe('http get meter', () => {
+    beforeEach(async () => {
+      resetCountHandlers();
+    });
+    it('get successfully', async () => {
+      const {id: controller, keys} = getAppIdentity();
+      const invocationSigner = keys.capabilityInvocationKey.signer();
+
+      const meter = {
+        controller,
+        product: {
+          // mock ID for webkms service product
+          id: 'urn:uuid:80a82316-e8c2-11eb-9570-10bf48838a41',
+        },
+        serviceId: 'mockWebKmsServiceId'
+      };
+
+      let result;
+      let error;
+      try {
+        const {data} = await createMeter({meter, invocationSigner});
+        const {meter: {id: meterId}} = data;
+        result = await getMeter({meterId, invocationSigner});
+      } catch(e) {
+        error = e;
+      }
+
+      should.not.exist(error);
+      should.exist(result);
+
+      const {data, status} = result;
+      // meter service should return a response with status code `200`
+      status.should.equal(200);
+      // meter should send well formed response JSON body
+      should.exist(data);
+      should.exist(data.meter);
+      should.exist(data.meter.id);
+      should.exist(data.meter.controller);
+      should.exist(data.meter.product);
+      should.exist(data.meter.product.id);
+      // meter should return the same data used in the body in the request
+      data.meter.controller.should.equal(meter.controller);
+      data.meter.product.id.should.equal(meter.product.id);
     });
   });
 
