@@ -145,6 +145,29 @@ describe('api', () => {
       data.meter.product.id.should.equal(meter.product.id);
       data.meter.serviceId.should.equal(meter.serviceId);
     });
+    it('throw error if serviceId is not set', async () => {
+      const {id: controller, keys} = getAppIdentity();
+      const invocationSigner = keys.capabilityInvocationKey.signer();
+
+      const meter = {
+        controller,
+        product: {
+          // mock ID for webkms service product
+          id: 'urn:uuid:80a82316-e8c2-11eb-9570-10bf48838a41',
+        },
+      };
+      let data;
+      let err;
+      try {
+        ({data} = await createMeter({meter, invocationSigner}));
+      } catch(e) {
+        err = e;
+      }
+      should.not.exist(data);
+      should.exist(err);
+      err.message.should.equal(
+        'The meter could not be matched with a service.');
+    });
   });
 
   describe('http get meter', () => {
