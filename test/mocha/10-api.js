@@ -3,7 +3,8 @@
  */
 const {getAppIdentity} = require('bedrock-app-identity');
 const {
-  clearHandlers, createMeter, getMeter, resetCountHandlers, updateMeter
+  clearHandlers, createMeter, getMeter, resetCountHandlers, updateMeter,
+  deleteMeter
 } = require('./helpers');
 const {handlers} = require('bedrock-meter-http');
 
@@ -215,7 +216,67 @@ describe('api', () => {
       data.meter.product.id.should.equal(meter.product.id);
     });
   });
+  describe('http delete meter', () => {
+    beforeEach(async () => {
+      resetCountHandlers();
+    });
+    it.skip('delete successfully', async () => {
+      // create meter --> get meter ---> delete meter ---> get meter
+      const {id: controller, keys} = getAppIdentity();
+      const invocationSigner = keys.capabilityInvocationKey.signer();
 
+      const meter = {
+        controller,
+        product: {
+          // mock ID for webkms service product
+          id: 'urn:uuid:80a82316-e8c2-11eb-9570-10bf48838a41',
+        },
+        serviceId: 'mock-service-id'
+      };
+
+      let result;
+      let error;
+      let meterId;
+      try {
+        const {data} = await createMeter({meter, invocationSigner});
+        ({meter: {id: meterId}} = data);
+        result = await getMeter({meterId, invocationSigner});
+      } catch(e) {
+        error = e;
+      }
+
+      should.not.exist(error);
+      should.exist(result);
+
+      const {data, status} = result;
+      // meter service should return a response with status code `200`
+      status.should.equal(200);
+      // meter should send well formed response JSON body
+      should.exist(data);
+      should.exist(data.meter);
+      should.exist(data.meter.id);
+      should.exist(data.meter.controller);
+      should.exist(data.meter.product);
+      should.exist(data.meter.product.id);
+      // meter should return the same data used in the body in the request
+      data.meter.controller.should.equal(meter.controller);
+      data.meter.product.id.should.equal(meter.product.id);
+
+      let err;
+      try {
+        // delete meter that was created
+        const res = await deleteMeter({meterId, invocationSigner});
+        console.log(res, 'res');
+
+        // const result2 = await getMeter({meterId, invocationSigner});
+      } catch(e) {
+        err = e;
+      }
+      console.log(err, 'err');
+      should.not.exist(err);
+
+    });
+  });
   describe('http update meter', () => {
     beforeEach(async () => {
       resetCountHandlers();
