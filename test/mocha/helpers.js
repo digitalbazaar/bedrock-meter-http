@@ -9,8 +9,6 @@ const {Ed25519Signature2020} = require('@digitalbazaar/ed25519-signature-2020');
 const {handlers} = require('bedrock-meter-http');
 const {agent} = require('bedrock-https-agent');
 const {ZcapClient} = require('@digitalbazaar/ezcap');
-const {httpClient, DEFAULT_HEADERS} = require('@digitalbazaar/http-client');
-const {signCapabilityInvocation} = require('http-signature-zcap-invoke');
 
 exports.cleanDB = async () => {
   await database.collections['meter-meter'].deleteMany({});
@@ -64,19 +62,17 @@ exports.updateMeter = async ({meterId, meter, invocationSigner}) => {
 };
 
 exports.deleteMeter = async ({meterId, invocationSigner}) => {
-  const url = `${bedrock.config.server.baseUri}/meters`;
-
-  const headers = await signCapabilityInvocation({
-    url, method: 'delete',
-    headers: DEFAULT_HEADERS,
-    capability: 'urn:zcap:root:' + encodeURIComponent(url),
+  const zcapClient = new ZcapClient({
+    agent,
     invocationSigner,
-    capabilityAction: 'delete'
+    SuiteClass: Ed25519Signature2020
   });
-  console.log(headers, 'headers');
-
-  const meterService = `${url}/${meterId}`;
-  await httpClient.delete(meterService, {agent, headers});
+  const meterService = `${bedrock.config.server.baseUri}/meters/${meterId}`;
+  await zcapClient.request({
+    url: meterService,
+    method: 'delete',
+    action: 'write',
+  });
 };
 
 const HANDLER_COUNTS = {
