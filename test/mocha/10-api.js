@@ -220,7 +220,7 @@ describe('api', () => {
     beforeEach(async () => {
       resetCountHandlers();
     });
-    it.skip('delete successfully', async () => {
+    it.only('delete successfully', async () => {
       // create meter --> get meter ---> delete meter ---> get meter
       const {id: controller, keys} = getAppIdentity();
       const invocationSigner = keys.capabilityInvocationKey.signer();
@@ -262,19 +262,27 @@ describe('api', () => {
       data.meter.controller.should.equal(meter.controller);
       data.meter.product.id.should.equal(meter.product.id);
 
-      let err;
+      let result2;
+      let error2;
       try {
         // delete meter that was created
-        const res = await deleteMeter({meterId, invocationSigner});
-        console.log(res, 'res');
+        await deleteMeter({meterId, invocationSigner});
 
-        // const result2 = await getMeter({meterId, invocationSigner});
+        // then try to get the meter again, should get meter not found error
+        // result2 = await getMeter({meterId, invocationSigner});
       } catch(e) {
-        err = e;
+        error2 = e;
       }
-      console.log(err, 'err');
-      should.not.exist(err);
+      should.exist(error2);
+      should.not.exist(result2);
+      console.log(error2);
+      const {data: data2, response} = error2;
 
+      // meter service should return a response with status code `404`
+      response.status.should.equal(404);
+
+      data2.type.should.equal('NotFoundError');
+      data2.details.httpStatusCode.should.equal(404);
     });
   });
   describe('http update meter', () => {
