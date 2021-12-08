@@ -220,7 +220,7 @@ describe('api', () => {
     beforeEach(async () => {
       resetCountHandlers();
     });
-    it.only('delete successfully', async () => {
+    it('delete successfully', async () => {
       // create meter --> get meter ---> delete meter ---> get meter
       const {id: controller, keys} = getAppIdentity();
       const invocationSigner = keys.capabilityInvocationKey.signer();
@@ -235,17 +235,17 @@ describe('api', () => {
       };
 
       let result;
-      let error;
+      let err;
       let meterId;
       try {
         const {data} = await createMeter({meter, invocationSigner});
         ({meter: {id: meterId}} = data);
         result = await getMeter({meterId, invocationSigner});
       } catch(e) {
-        error = e;
+        err = e;
       }
 
-      should.not.exist(error);
+      should.not.exist(err);
       should.exist(result);
 
       const {data, status} = result;
@@ -262,22 +262,26 @@ describe('api', () => {
       data.meter.controller.should.equal(meter.controller);
       data.meter.product.id.should.equal(meter.product.id);
 
-      let result2;
-      let error2;
+      let err1;
       try {
         // delete meter that was created
         await deleteMeter({meterId, invocationSigner});
-
-        // then try to get the meter again, should get meter not found error
-        // result2 = await getMeter({meterId, invocationSigner});
       } catch(e) {
-        error2 = e;
+        err1 = e;
       }
-      should.exist(error2);
-      should.not.exist(result2);
-      console.log(error2);
-      const {data: data2, response} = error2;
+      should.not.exist(err1);
 
+      let result2;
+      let err2;
+      try {
+        // then try to get the meter again, should get meter not found error
+        result2 = await getMeter({meterId, invocationSigner});
+      } catch(e) {
+        err2 = e;
+      }
+      should.not.exist(result2);
+      should.exist(err2);
+      const {data: data2, response} = err2;
       // meter service should return a response with status code `404`
       response.status.should.equal(404);
 
