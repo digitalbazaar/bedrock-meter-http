@@ -1,5 +1,10 @@
 # bedrock-meter-http ChangeLog
 
+## 3.2.0 - 2021-TDB
+
+### Added
+- Add additional tests.
+
 ## 3.1.0 - 2021-09-21
 
 ### Added
