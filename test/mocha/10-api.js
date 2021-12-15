@@ -427,7 +427,7 @@ describe('api', () => {
       // meter service should return a response with status code `400`
       response.status.should.equal(400);
 
-      data.type.should.equal('DataError');
+      data.type.should.equal('URLMismatchError');
       data.details.httpStatusCode.should.equal(400);
       data.details.expectedMeterId.should.equal(meterData.meter.id);
       data.details.actualMeterId.should.equal('foobar');
