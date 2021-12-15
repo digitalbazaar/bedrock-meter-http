@@ -163,7 +163,7 @@ describe('api', () => {
         const meter = {
           controller,
           product: {
-          // mock ID for webkms service product
+            // mock ID for webkms service product
             id: 'urn:uuid:80a82316-e8c2-11eb-9570-10bf48838a41',
           },
           serviceId: 'mockWebKmsServiceId'
