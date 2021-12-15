@@ -75,6 +75,30 @@ exports.deleteMeter = async ({meterId, invocationSigner}) => {
   });
 };
 
+exports.getMeterUsage = async ({meterId, invocationSigner}) => {
+  const zcapClient = new ZcapClient({
+    agent,
+    invocationSigner,
+    SuiteClass: Ed25519Signature2020
+  });
+
+  const meterService =
+    `${bedrock.config.server.baseUri}/meters/${meterId}/usage`;
+  return zcapClient.read({url: meterService});
+};
+
+exports.updateMeterUsage = async ({meterId, meter, invocationSigner}) => {
+  const zcapClient = new ZcapClient({
+    agent,
+    invocationSigner,
+    SuiteClass: Ed25519Signature2020
+  });
+
+  const meterService =
+    `${bedrock.config.server.baseUri}/meters/${meterId}/usage`;
+  return zcapClient.write({url: meterService, json: {meter}});
+};
+
 const HANDLER_COUNTS = {
   create: 0,
   update: 0,

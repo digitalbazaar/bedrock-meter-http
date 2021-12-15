@@ -4,9 +4,13 @@
 const {getAppIdentity} = require('bedrock-app-identity');
 const {
   clearHandlers, createMeter, getMeter, resetCountHandlers, updateMeter,
-  deleteMeter
+  deleteMeter, getMeterUsage, updateMeterUsage
 } = require('./helpers');
 const {handlers} = require('bedrock-meter-http');
+const {decodeSecretKeySeed} = require('bnid');
+const didKey = require('@digitalbazaar/did-method-key');
+
+const didKeyDriver = didKey.driver();
 
 describe('api', () => {
   describe('setHandler', () => {
@@ -446,6 +450,126 @@ describe('api', () => {
 
       data.type.should.equal('InvalidStateError');
       data.details.httpStatusCode.should.equal(409);
+    });
+  });
+  describe('http meter usage', () => {
+    beforeEach(async () => {
+      resetCountHandlers();
+    });
+    it('get successfully', async () => {
+      const {id: controller, keys} = getAppIdentity();
+      const invocationSigner = keys.capabilityInvocationKey.signer();
+
+      const meter = {
+        controller,
+        product: {
+          // mock ID for webkms service product
+          id: 'urn:uuid:80a82316-e8c2-11eb-9570-10bf48838a41',
+        },
+        // mock service id for webkms services
+        serviceId: 'did:key:z6MkwZ7AXrDpuVi5duY2qvVSx1tBkGmVnmRjDvvwzoVnAzC4'
+      };
+
+      const {data, status} = await createMeter({meter, invocationSigner});
+
+      status.should.equal(200);
+      should.exist(data);
+      should.exist(data.meter);
+
+      // Use the secret seed of webkms service to generate capability
+      // invocation key pair and use it to get the signer
+      const seedMultibase = 'z1AWrfBoQx1mbiWBfWT7eksbtJf91v2pvEpwhoHDzezfaiH';
+      const decoded1 = decodeSecretKeySeed({secretKeySeed: seedMultibase});
+      const {methodFor} = await didKeyDriver.generate({seed: decoded1});
+      const invocationCapabilityKeyPair = methodFor(
+        {purpose: 'capabilityInvocation'});
+
+      let err;
+      let res;
+      try {
+        res = await getMeterUsage({
+          meterId: data.meter.id,
+          invocationSigner: invocationCapabilityKeyPair.signer()
+        });
+      } catch(e) {
+        err = e;
+      }
+      should.exist(res);
+      should.not.exist(err);
+      res.status.should.equal(200);
+      res.data.id.should.equal(data.meter.id);
+      res.data.controller.should.equal(data.meter.controller);
+      res.data.serviceId.should.equal(data.meter.serviceId);
+      res.data.product.id.should.equal(data.meter.product.id);
+      should.exist(res.data.usage);
+      res.data.usage.available.storage.should.equal(100);
+      res.data.usage.available.operations.should.equal(100);
+    });
+    it('fail to update', async () => {
+      const {id: controller, keys} = getAppIdentity();
+      const invocationSigner = keys.capabilityInvocationKey.signer();
+
+      const meter = {
+        controller,
+        product: {
+          // mock ID for webkms service product
+          id: 'urn:uuid:80a82316-e8c2-11eb-9570-10bf48838a41',
+        },
+        // mock service id for webkms services
+        serviceId: 'did:key:z6MkwZ7AXrDpuVi5duY2qvVSx1tBkGmVnmRjDvvwzoVnAzC4'
+      };
+
+      const {data, status} = await createMeter({meter, invocationSigner});
+
+      status.should.equal(200);
+      should.exist(data);
+      should.exist(data.meter);
+
+      // Use the secret seed of webkms service to generate capability
+      // invocation key pair and use it to get the signer
+      const seedMultibase = 'z1AWrfBoQx1mbiWBfWT7eksbtJf91v2pvEpwhoHDzezfaiH';
+      const decoded1 = decodeSecretKeySeed({secretKeySeed: seedMultibase});
+      const {methodFor} = await didKeyDriver.generate({seed: decoded1});
+      const invocationCapabilityKeyPair = methodFor(
+        {purpose: 'capabilityInvocation'});
+
+      // Get meter usage
+
+      const res = await getMeterUsage({
+        meterId: data.meter.id,
+        invocationSigner: invocationCapabilityKeyPair.signer()
+      });
+
+      should.exist(res);
+      res.status.should.equal(200);
+      should.exist(res.data.usage);
+      res.data.usage.available.storage.should.equal(100);
+      res.data.usage.available.operations.should.equal(100);
+
+      // Update meter usage
+      const updateMeter = {
+        controller,
+        product: {
+          id: 'urn:uuid:80a82316-e8c2-11eb-9570-10bf48838a41'
+        },
+        serviceId: 'did:key:z6MkwZ7AXrDpuVi5duY2qvVSx1tBkGmVnmRjDvvwzoVnAzC4',
+        usage: {available: {storage: 200, operations: 150}}
+      };
+      let err;
+      let result;
+      try {
+        result = await updateMeterUsage({
+          meter: updateMeter,
+          meterId: data.meter.id,
+          invocationSigner: invocationCapabilityKeyPair.signer()
+        });
+      } catch(e) {
+        err = e;
+      }
+      should.exist(err);
+      should.not.exist(result);
+      err.status.should.equal(503);
+      err.message.should.equal('Service Unavailable');
     });
   });
 });
