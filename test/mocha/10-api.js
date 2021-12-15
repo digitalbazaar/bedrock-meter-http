@@ -429,8 +429,8 @@ describe('api', () => {
 
       data.type.should.equal('URLMismatchError');
       data.details.httpStatusCode.should.equal(400);
-      data.details.expectedMeterId.should.equal(meterData.meter.id);
-      data.details.actualMeterId.should.equal('foobar');
+      data.details.expected.should.equal(meterData.meter.id);
+      data.details.actual.should.equal('foobar');
     });
 
     it('update failure (bad sequence)', async () => {
