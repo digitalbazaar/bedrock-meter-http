@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2021-2022 Digital Bazaar, Inc. All rights reserved.
  */
 const {getAppIdentity} = require('bedrock-app-identity');
 const {
@@ -135,8 +135,8 @@ describe('api', () => {
       };
 
       const {data, status} = await createMeter({meter, invocationSigner});
-      // meter service should return a response with status code `200`
-      status.should.equal(200);
+      // meter service should return a response with status code `201`
+      status.should.equal(201);
       // meter should send well formed response JSON body
       should.exist(data);
       should.exist(data.meter);
@@ -150,41 +150,41 @@ describe('api', () => {
       data.meter.product.id.should.equal(meter.product.id);
       data.meter.serviceId.should.equal(meter.serviceId);
     });
-    it('throws authorization error when "invoker" does not match "controller"',
-      async () => {
-        const {id: controller} = getAppIdentity();
-        // Use a different signer
-        const seedMultibase = 'z1AWrfBoQx1mbiWBfWT7eksbtJf91v2pvEpwhoHDzezfaiH';
-        const decoded1 = decodeSecretKeySeed({secretKeySeed: seedMultibase});
-        const {methodFor} = await didKeyDriver.generate({seed: decoded1});
-        const invocationCapabilityKeyPair = methodFor(
-          {purpose: 'capabilityInvocation'});
+    it('throws authorization error when invoker does not match ' +
+      '"controller"', async () => {
+      const {id: controller} = getAppIdentity();
+      // Use a different signer
+      const seedMultibase = 'z1AWrfBoQx1mbiWBfWT7eksbtJf91v2pvEpwhoHDzezfaiH';
+      const decoded1 = decodeSecretKeySeed({secretKeySeed: seedMultibase});
+      const {methodFor} = await didKeyDriver.generate({seed: decoded1});
+      const invocationCapabilityKeyPair = methodFor(
+        {purpose: 'capabilityInvocation'});
 
-        const meter = {
-          controller,
-          product: {
-            // mock ID for webkms service product
-            id: 'urn:uuid:80a82316-e8c2-11eb-9570-10bf48838a41',
-          },
-          serviceId: 'mockWebKmsServiceId'
-        };
-        let res;
-        let err;
-        try {
-          res = await createMeter(
-            {meter, invocationSigner: invocationCapabilityKeyPair.signer()});
-        } catch(e) {
-          err = e;
-        }
-        should.not.exist(res);
-        should.exist(err);
-        err.status.should.equal(403);
-        err.data.message.should.equal('Authorization error.');
-        err.data.type.should.equal('NotAllowedError');
-        err.data.cause.message.should.equal(
-          'The authorized invoker does not match the verification method or ' +
-          'its controller.');
-      });
+      const meter = {
+        controller,
+        product: {
+          // mock ID for webkms service product
+          id: 'urn:uuid:80a82316-e8c2-11eb-9570-10bf48838a41',
+        },
+        serviceId: 'mockWebKmsServiceId'
+      };
+      let res;
+      let err;
+      try {
+        res = await createMeter(
+          {meter, invocationSigner: invocationCapabilityKeyPair.signer()});
+      } catch(e) {
+        err = e;
+      }
+      should.not.exist(res);
+      should.exist(err);
+      err.status.should.equal(403);
+      err.data.message.should.equal('Authorization error.');
+      err.data.type.should.equal('NotAllowedError');
+      err.data.cause.message.should.equal(
+        'The capability controller does not match the verification method ' +
+        '(or its controller) used to invoke.');
+    });
     it('throw error if serviceId is not set', async () => {
       const {id: controller, keys} = getAppIdentity();
       const invocationSigner = keys.capabilityInvocationKey.signer();
@@ -507,7 +507,7 @@ describe('api', () => {
 
       const {data, status} = await createMeter({meter, invocationSigner});
 
-      status.should.equal(200);
+      status.should.equal(201);
       should.exist(data);
       should.exist(data.meter);
 
@@ -556,7 +556,7 @@ describe('api', () => {
 
       const {data, status} = await createMeter({meter, invocationSigner});
 
-      status.should.equal(200);
+      status.should.equal(201);
       should.exist(data);
       should.exist(data.meter);
 
