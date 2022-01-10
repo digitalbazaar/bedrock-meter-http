@@ -8,6 +8,7 @@
 ### Changed
 - **BREAKING**: Use ezcap-express@5. These changes include major breaking
   simplifications to ZCAP-LD (zcapld@6).
+- **BREAKING**: Return `201` http response code when creating a meter.
 
 ## 3.1.0 - 2021-09-21
 
