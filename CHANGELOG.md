@@ -1,13 +1,13 @@
 # bedrock-meter-http ChangeLog
 
-## 4.0.0 - 2021-01-xx
+## 4.0.0 - 2021-01-11
 
 ### Added
 - Add additional tests.
 
 ### Changed
 - **BREAKING**: Use ezcap-express@5. These changes include major breaking
-  simplifications to ZCAP-LD (zcapld@6).
+  simplifications to ZCAP (zcap@7).
 - **BREAKING**: Return `201` http response code when creating a meter.
 
 ## 3.1.0 - 2021-09-21
