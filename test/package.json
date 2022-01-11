@@ -22,9 +22,9 @@
     "bedrock-meter": "^1.0.0",
     "bedrock-meter-http": "file:..",
     "bedrock-mongodb": "^8.2.0",
-    "bedrock-zcap-storage": "digitalbazaar/bedrock-zcap-storage#zcapld-update",
     "bedrock-server": "^3.0.0",
-    "bedrock-test": "^5.3.2",
+    "bedrock-test": "^6.0.0",
+    "bedrock-zcap-storage": "^5.0.0",
     "bnid": "^2.1.0",
     "cross-env": "^7.0.3",
     "nyc": "^15.1.0"
