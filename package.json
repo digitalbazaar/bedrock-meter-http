@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/digitalbazaar/bedrock-meter-http",
   "dependencies": {
-    "@digitalbazaar/ezcap-express": "^5.0.0",
+    "@digitalbazaar/ezcap-express": "^5.0.1",
     "bnid": "^2.0.0",
     "cors": "^2.8.5",
     "esm": "^3.2.25",
@@ -32,10 +32,10 @@
   },
   "peerDependencies": {
     "bedrock": "^4.3.0",
-    "bedrock-express": "^6.0.0",
+    "bedrock-express": "^6.2.0",
     "bedrock-jsonld-document-loader": "^1.1.0",
     "bedrock-meter": "^1.0.0",
-    "bedrock-zcap-storage": "digitalbazaar/bedrock-zcap-storage#zcapld-update"
+    "bedrock-zcap-storage": "^5.0.0"
   },
   "directories": {
     "lib": "./lib"
