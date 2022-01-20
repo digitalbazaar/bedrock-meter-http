@@ -1,6 +1,6 @@
 # bedrock-meter-http ChangeLog
 
-## 4.0.1 - 2021-01-xx
+## 4.0.1 - 2021-01-20
 
 ### Fixed
 - Do not expose details from errors that are not marked public.
