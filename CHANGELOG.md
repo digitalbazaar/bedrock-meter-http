@@ -1,5 +1,12 @@
 # bedrock-meter-http ChangeLog
 
+## 5.0.0 - 2022-03-xx
+
+### Changed
+- **BREAKING**: Move zcap revocations to `/zcaps/revocations` to better
+  future proof.
+- **BREAKING**: Use `@digitalbazaar/ezcap-express@6`.
+
 ## 4.0.1 - 2021-01-20
 
 ### Fixed
