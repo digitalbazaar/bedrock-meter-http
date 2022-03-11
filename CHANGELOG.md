@@ -1,6 +1,6 @@
 # bedrock-meter-http ChangeLog
 
-## 6.0.0 - 2022-03-xx
+## 6.0.0 - 2022-03-11
 
 ### Added
 - Add `config.authorizeZcapInvocationOptions` to allow configuration of
