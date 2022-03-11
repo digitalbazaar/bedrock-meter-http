@@ -1,5 +1,11 @@
 # bedrock-meter-http ChangeLog
 
+## 5.1.0 - 2022-03-xx
+
+### Added
+- Add `config.authorizeZcapInvocationOptions` to allow configuration of
+  `authorizeZcapInvocation` middleware in `ezcap-express`.
+
 ## 5.0.0 - 2022-03-01
 
 ### Changed
