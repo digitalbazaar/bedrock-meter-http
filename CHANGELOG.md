@@ -1,10 +1,13 @@
 # bedrock-meter-http ChangeLog
 
-## 5.1.0 - 2022-03-xx
+## 6.0.0 - 2022-03-xx
 
 ### Added
 - Add `config.authorizeZcapInvocationOptions` to allow configuration of
   `authorizeZcapInvocation` middleware in `ezcap-express`.
+
+### Changed
+- **BREAKING**: Set default TTL for zcaps to 1 year.
 
 ## 5.0.0 - 2022-03-01
 
