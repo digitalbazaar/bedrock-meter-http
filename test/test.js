@@ -1,13 +1,13 @@
-/*
- * Copyright (c) 2020-2021 Digital Bazaar, Inc. All rights reserved.
+/*!
+ * Copyright (c) 2020-2022 Digital Bazaar, Inc. All rights reserved.
  */
-'use strict';
-
-const bedrock = require('bedrock');
-require('bedrock-app-identity');
-require('bedrock-https-agent');
-require('bedrock-mongodb');
-const {handlers} = require('bedrock-meter-http');
+import * as bedrock from '@bedrock/core';
+import '@bedrock/app-identity';
+import '@bedrock/express';
+import '@bedrock/https-agent';
+import '@bedrock/meter';
+import '@bedrock/mongodb';
+import {handlers} from '@bedrock/meter-http';
 
 bedrock.events.on('bedrock.init', async () => {
   /* Handlers need to be added before `bedrock.start` is called. The empty
@@ -24,5 +24,5 @@ bedrock.events.on('bedrock.init', async () => {
   handlers.setUseHandler({handler: ({meter} = {}) => ({meter})});
 });
 
-require('bedrock-test');
+import '@bedrock/test';
 bedrock.start();
