@@ -1,20 +1,18 @@
 /*!
- * Copyright (c) 2021 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2021-2022 Digital Bazaar, Inc. All rights reserved.
  */
-'use strict';
+import * as bedrock from '@bedrock/core';
+import * as database from '@bedrock/mongodb';
+import {Ed25519Signature2020} from '@digitalbazaar/ed25519-signature-2020';
+import {handlers} from '@bedrock/meter-http';
+import {agent} from '@bedrock/https-agent';
+import {ZcapClient} from '@digitalbazaar/ezcap';
 
-const bedrock = require('bedrock');
-const database = require('bedrock-mongodb');
-const {Ed25519Signature2020} = require('@digitalbazaar/ed25519-signature-2020');
-const {handlers} = require('bedrock-meter-http');
-const {agent} = require('bedrock-https-agent');
-const {ZcapClient} = require('@digitalbazaar/ezcap');
-
-exports.cleanDB = async () => {
+export async function cleanDB() {
   await database.collections['meter-meter'].deleteMany({});
-};
+}
 
-exports.createMeter = async ({meter, invocationSigner}) => {
+export async function createMeter({meter, invocationSigner}) {
   const zcapClient = new ZcapClient({
     agent,
     invocationSigner,
@@ -24,9 +22,9 @@ exports.createMeter = async ({meter, invocationSigner}) => {
   // create a meter
   const meterService = `${bedrock.config.server.baseUri}/meters`;
   return zcapClient.write({url: meterService, json: meter});
-};
+}
 
-exports.getMeter = async ({meterId, invocationSigner}) => {
+export async function getMeter({meterId, invocationSigner}) {
   const zcapClient = new ZcapClient({
     agent,
     invocationSigner,
@@ -36,9 +34,9 @@ exports.getMeter = async ({meterId, invocationSigner}) => {
   const meterService = `${bedrock.config.server.baseUri}/meters/${meterId}`;
 
   return zcapClient.read({url: meterService});
-};
+}
 
-exports.updateMeter = async ({meterId, meter, invocationSigner}) => {
+export async function updateMeter({meterId, meter, invocationSigner}) {
   const zcapClient = new ZcapClient({
     agent,
     invocationSigner,
@@ -59,9 +57,9 @@ exports.updateMeter = async ({meterId, meter, invocationSigner}) => {
   ++meter.sequence;
 
   return zcapClient.write({url: meterService, json: meter});
-};
+}
 
-exports.deleteMeter = async ({meterId, invocationSigner}) => {
+export async function deleteMeter({meterId, invocationSigner}) {
   const zcapClient = new ZcapClient({
     agent,
     invocationSigner,
@@ -73,9 +71,9 @@ exports.deleteMeter = async ({meterId, invocationSigner}) => {
     method: 'delete',
     action: 'write',
   });
-};
+}
 
-exports.getMeterUsage = async ({meterId, invocationSigner}) => {
+export async function getMeterUsage({meterId, invocationSigner}) {
   const zcapClient = new ZcapClient({
     agent,
     invocationSigner,
@@ -85,9 +83,9 @@ exports.getMeterUsage = async ({meterId, invocationSigner}) => {
   const meterService =
     `${bedrock.config.server.baseUri}/meters/${meterId}/usage`;
   return zcapClient.read({url: meterService});
-};
+}
 
-exports.updateMeterUsage = async ({meterId, meter, invocationSigner}) => {
+export async function updateMeterUsage({meterId, meter, invocationSigner}) {
   const zcapClient = new ZcapClient({
     agent,
     invocationSigner,
@@ -97,24 +95,23 @@ exports.updateMeterUsage = async ({meterId, meter, invocationSigner}) => {
   const meterService =
     `${bedrock.config.server.baseUri}/meters/${meterId}/usage`;
   return zcapClient.write({url: meterService, json: {meter}});
-};
+}
 
-const HANDLER_COUNTS = {
+export const HANDLER_COUNTS = {
   create: 0,
   update: 0,
   remove: 0,
   use: 0
 };
-exports.HANDLER_COUNTS = HANDLER_COUNTS;
 
-exports.clearHandlers = () => {
+export function clearHandlers() {
   handlers._HANDLERS.create = null;
   handlers._HANDLERS.update = null;
   handlers._HANDLERS.remove = null;
   handlers._HANDLERS.use = null;
-};
+}
 
-exports.setCountHandlers = () => {
+export function setCountHandlers() {
   handlers.setCreateHandler({
     handler: ({meter} = {}) => {
       HANDLER_COUNTS.create++;
@@ -139,17 +136,17 @@ exports.setCountHandlers = () => {
       return {meter};
     }
   });
-};
+}
 
-exports.clearHandlerCounts = () => {
+export function clearHandlerCounts() {
   HANDLER_COUNTS.create = 0;
   HANDLER_COUNTS.update = 0;
   HANDLER_COUNTS.remove = 0;
   HANDLER_COUNTS.use = 0;
-};
+}
 
-exports.resetCountHandlers = () => {
+export function resetCountHandlers() {
   exports.clearHandlers();
   exports.setCountHandlers();
   exports.clearHandlerCounts();
-};
+}

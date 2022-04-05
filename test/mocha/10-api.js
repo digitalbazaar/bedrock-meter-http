@@ -1,12 +1,14 @@
-/*
+/*!
  * Copyright (c) 2021-2022 Digital Bazaar, Inc. All rights reserved.
  */
-const {getAppIdentity} = require('bedrock-app-identity');
-const {
+import {getAppIdentity} from '@bedrock/app-identity';
+import {
   clearHandlers, createMeter, getMeter, resetCountHandlers, updateMeter,
   deleteMeter, getMeterUsage, updateMeterUsage
-} = require('./helpers');
-const {handlers} = require('bedrock-meter-http');
+} from './helpers.js';
+import {createRequire} from 'module';
+import {handlers} from '@bedrock/meter-http';
+const require = createRequire(import.meta.url);
 const {decodeSecretKeySeed} = require('bnid');
 const didKey = require('@digitalbazaar/did-method-key');
 
