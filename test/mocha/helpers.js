@@ -3,10 +3,13 @@
  */
 import * as bedrock from '@bedrock/core';
 import * as database from '@bedrock/mongodb';
-import {Ed25519Signature2020} from '@digitalbazaar/ed25519-signature-2020';
-import {handlers} from '@bedrock/meter-http';
 import {agent} from '@bedrock/https-agent';
-import {ZcapClient} from '@digitalbazaar/ezcap';
+import {createRequire} from 'module';
+import {handlers} from '@bedrock/meter-http';
+const require = createRequire(import.meta.url);
+const {Ed25519Signature2020} =
+  require('@digitalbazaar/ed25519-signature-2020');
+const {ZcapClient} = require('@digitalbazaar/ezcap');
 
 export async function cleanDB() {
   await database.collections['meter-meter'].deleteMany({});
@@ -146,7 +149,7 @@ export function clearHandlerCounts() {
 }
 
 export function resetCountHandlers() {
-  exports.clearHandlers();
-  exports.setCountHandlers();
-  exports.clearHandlerCounts();
+  clearHandlers();
+  setCountHandlers();
+  clearHandlerCounts();
 }
