@@ -10,7 +10,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 config.mocha.tests.push(path.join(__dirname, 'mocha'));
 
 // MongoDB
-config.mongodb.name = 'bedrock_module_template_http_test';
+config.mongodb.name = 'bedrock_meter_http_test';
 config.mongodb.dropCollections.onInit = true;
 config.mongodb.dropCollections.collections = [];
 
