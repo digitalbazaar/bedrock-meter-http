@@ -6,7 +6,7 @@ import {
   clearHandlers, createMeter, getMeter, resetCountHandlers, updateMeter,
   deleteMeter, getMeterUsage, updateMeterUsage
 } from './helpers.js';
-import {createRequire} from 'module';
+import {createRequire} from 'node:module';
 import {handlers} from '@bedrock/meter-http';
 const require = createRequire(import.meta.url);
 const {decodeSecretKeySeed} = require('bnid');
