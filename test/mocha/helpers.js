@@ -4,7 +4,7 @@
 import * as bedrock from '@bedrock/core';
 import * as database from '@bedrock/mongodb';
 import {agent} from '@bedrock/https-agent';
-import {createRequire} from 'module';
+import {createRequire} from 'node:module';
 import {handlers} from '@bedrock/meter-http';
 const require = createRequire(import.meta.url);
 const {Ed25519Signature2020} =
