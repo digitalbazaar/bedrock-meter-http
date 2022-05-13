@@ -1,6 +1,6 @@
 # bedrock-meter-http ChangeLog
 
-## 8.1.0 - 2022-05-xx
+## 8.1.0 - 2022-05-13
 
 ### Added
 - Include full error as non-public cause in onError handler.
