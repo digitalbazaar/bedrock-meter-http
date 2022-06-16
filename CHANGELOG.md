@@ -1,5 +1,10 @@
 # bedrock-meter-http ChangeLog
 
+## 8.2.0 - 2022-xx-xx
+
+### Fixed
+- Added missing dependencies.
+
 ## 8.1.0 - 2022-05-13
 
 ### Added
