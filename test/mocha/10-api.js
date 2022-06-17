@@ -6,11 +6,9 @@ import {
   clearHandlers, createMeter, getMeter, resetCountHandlers, updateMeter,
   deleteMeter, getMeterUsage, updateMeterUsage
 } from './helpers.js';
-import {createRequire} from 'node:module';
 import {handlers} from '@bedrock/meter-http';
-const require = createRequire(import.meta.url);
-const {decodeSecretKeySeed} = require('bnid');
-const didKey = require('@digitalbazaar/did-method-key');
+import {decodeSecretKeySeed} from 'bnid';
+import * as didKey from '@digitalbazaar/did-method-key';
 
 const didKeyDriver = didKey.driver();
 
@@ -606,7 +604,7 @@ describe('api', () => {
       should.exist(err);
       should.not.exist(result);
       err.status.should.equal(503);
-      err.message.should.equal('Service Unavailable');
+      err.message.should.contain('Service Unavailable');
     });
   });
 });

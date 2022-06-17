@@ -5,6 +5,10 @@
 ### Fixed
 - Added missing dependencies.
 
+### Changed
+- Update dependencies.
+  - Fixed test "Service Unavailable" result check.
+
 ## 8.1.0 - 2022-05-13
 
 ### Added
