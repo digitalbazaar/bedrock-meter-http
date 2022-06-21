@@ -1,6 +1,6 @@
 # bedrock-meter-http ChangeLog
 
-## 9.0.0 - 2022-xx-xx
+## 9.0.0 - 2022-06-21
 
 ### Fixed
 - Added missing dependencies.
