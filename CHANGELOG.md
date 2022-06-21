@@ -1,11 +1,12 @@
 # bedrock-meter-http ChangeLog
 
-## 8.2.0 - 2022-xx-xx
+## 9.0.0 - 2022-xx-xx
 
 ### Fixed
 - Added missing dependencies.
 
 ### Changed
+- **BREAKING**: Require Node.js >=16.
 - Update dependencies.
   - Fixed test "Service Unavailable" result check.
 
