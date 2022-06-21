@@ -1,5 +1,10 @@
 # bedrock-meter-http ChangeLog
 
+## 9.0.1 - 2022-xx-xx
+
+### Changed
+- Use `package.json` `files` field.
+
 ## 9.0.0 - 2022-06-21
 
 ### Fixed
