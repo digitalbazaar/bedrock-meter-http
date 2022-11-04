@@ -1,5 +1,12 @@
 # bedrock-meter-http ChangeLog
 
+## 10.0.0 - 2022-11-dd
+
+### Changed
+- **BREAKING**: Use `@bedrock/meter@5` which uses multihash (identity hash ID)
+  when encoding meter IDs to ensure size is encoded / self-describing. No
+  existing meters from previous versions will be compatible with this release.
+
 ## 9.0.1 - 2022-06-21
 
 ### Changed
