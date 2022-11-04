@@ -1,6 +1,6 @@
 # bedrock-meter-http ChangeLog
 
-## 10.0.0 - 2022-11-dd
+## 10.0.0 - 2022-11-04
 
 ### Changed
 - **BREAKING**: Use `@bedrock/meter@5` which uses multihash (identity hash ID)
