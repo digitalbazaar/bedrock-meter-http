@@ -214,7 +214,47 @@ describe('api', () => {
     beforeEach(async () => {
       resetCountHandlers();
     });
-    it('get successfully', async () => {
+    it('should fail to get using invalid meter ID', async () => {
+      const {keys} = getAppIdentity();
+      const invocationSigner = keys.capabilityInvocationKey.signer();
+      const meterId = 'zV2wZh7G61vwMPk2PVuSC1L';
+
+      let data;
+      let err;
+      try {
+        result = await getMeter({meterId, invocationSigner});
+      } catch(e) {
+        err = e;
+      }
+      should.not.exist(data);
+      should.exist(err);
+      should.exist(err.data);
+      err.data.name.should.equal('NotFoundError');
+      err.data.message.should.equal('Meter not found.');
+      should.exist(err.data.cause);
+      err.data.cause.name.should.equal('DataError');
+      err.data.cause.message.should.equal('Invalid meter ID.');
+    });
+    it('should fail to get meter that does not exist', async () => {
+      const {keys} = getAppIdentity();
+      const invocationSigner = keys.capabilityInvocationKey.signer();
+      const meterId = 'z1A9rUc9qfSXabATqaRCknvFm';
+
+      let data;
+      let err;
+      try {
+        result = await getMeter({meterId, invocationSigner});
+      } catch(e) {
+        err = e;
+      }
+      should.not.exist(data);
+      should.exist(err);
+      should.exist(err.data);
+      err.data.name.should.equal('NotFoundError');
+      err.data.message.should.equal('Meter not found.');
+      should.not.exist(err.data.cause);
+    });
+    it('should get successfully', async () => {
       const {id: controller, keys} = getAppIdentity();
       const invocationSigner = keys.capabilityInvocationKey.signer();
 
