@@ -219,14 +219,14 @@ describe('api', () => {
       const invocationSigner = keys.capabilityInvocationKey.signer();
       const meterId = 'zV2wZh7G61vwMPk2PVuSC1L';
 
-      let data;
+      let result;
       let err;
       try {
         result = await getMeter({meterId, invocationSigner});
       } catch(e) {
         err = e;
       }
-      should.not.exist(data);
+      should.not.exist(result);
       should.exist(err);
       should.exist(err.data);
       err.data.name.should.equal('NotFoundError');
@@ -240,14 +240,14 @@ describe('api', () => {
       const invocationSigner = keys.capabilityInvocationKey.signer();
       const meterId = 'z1A9rUc9qfSXabATqaRCknvFm';
 
-      let data;
+      let result;
       let err;
       try {
         result = await getMeter({meterId, invocationSigner});
       } catch(e) {
         err = e;
       }
-      should.not.exist(data);
+      should.not.exist(result);
       should.exist(err);
       should.exist(err.data);
       err.data.name.should.equal('NotFoundError');
