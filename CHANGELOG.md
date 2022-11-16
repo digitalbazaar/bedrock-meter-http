@@ -1,6 +1,6 @@
 # bedrock-meter-http ChangeLog
 
-## 10.1.0 - 2022-11-dd
+## 10.1.0 - 2022-11-16
 
 ### Changed
 - Require `@bedrock/meter@5.1.1` peer dependency.
