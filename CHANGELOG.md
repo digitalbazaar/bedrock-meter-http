@@ -1,5 +1,10 @@
 # bedrock-meter-http ChangeLog
 
+## 11.0.0 -
+
+### Changed
+- Upgraded to `@bedrock/meter@6` & `@bedrock/zcap-storage@9` to support MongoDB Driver 4.
+
 ## 10.1.0 - 2022-11-16
 
 ### Changed
