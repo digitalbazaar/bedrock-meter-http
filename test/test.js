@@ -2,12 +2,12 @@
  * Copyright (c) 2020-2022 Digital Bazaar, Inc. All rights reserved.
  */
 import * as bedrock from '@bedrock/core';
+import {handlers} from '@bedrock/meter-http';
 import '@bedrock/app-identity';
 import '@bedrock/express';
 import '@bedrock/https-agent';
 import '@bedrock/meter';
 import '@bedrock/mongodb';
-import {handlers} from '@bedrock/meter-http';
 
 bedrock.events.on('bedrock.init', async () => {
   /* Handlers need to be added before `bedrock.start` is called. The empty
