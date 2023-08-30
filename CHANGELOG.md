@@ -1,6 +1,6 @@
 # bedrock-meter-http ChangeLog
 
-## 11.0.0 - 2023-08-TBD
+## 11.0.0 - 2023-08-30
 
 ### Changed
 - **BREAKING**: Drop support for Nodejs <= 16.
