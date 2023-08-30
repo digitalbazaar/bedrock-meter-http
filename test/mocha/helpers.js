@@ -4,8 +4,8 @@
 import * as bedrock from '@bedrock/core';
 import * as database from '@bedrock/mongodb';
 import {agent} from '@bedrock/https-agent';
-import {handlers} from '@bedrock/meter-http';
 import {Ed25519Signature2020} from '@digitalbazaar/ed25519-signature-2020';
+import {handlers} from '@bedrock/meter-http';
 import {ZcapClient} from '@digitalbazaar/ezcap';
 
 export async function cleanDB() {

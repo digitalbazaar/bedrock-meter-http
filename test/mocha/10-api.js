@@ -1,14 +1,14 @@
 /*!
  * Copyright (c) 2021-2022 Digital Bazaar, Inc. All rights reserved.
  */
-import {getAppIdentity} from '@bedrock/app-identity';
-import {
-  clearHandlers, createMeter, getMeter, resetCountHandlers, updateMeter,
-  deleteMeter, getMeterUsage, updateMeterUsage
-} from './helpers.js';
-import {handlers} from '@bedrock/meter-http';
-import {decodeSecretKeySeed} from 'bnid';
 import * as didKey from '@digitalbazaar/did-method-key';
+import {
+  clearHandlers, createMeter, deleteMeter, getMeter, getMeterUsage,
+  resetCountHandlers, updateMeter, updateMeterUsage
+} from './helpers.js';
+import {decodeSecretKeySeed} from 'bnid';
+import {getAppIdentity} from '@bedrock/app-identity';
+import {handlers} from '@bedrock/meter-http';
 
 const didKeyDriver = didKey.driver();
 
