@@ -1,5 +1,13 @@
 # bedrock-meter-http ChangeLog
 
+## 11.0.0 - 2023-08-TBD
+
+### Changed
+- **BREAKING**: Drop support for Nodejs <= 16.
+- **BREAKING**: Update peer deps.
+  - Update `@bedrock/did-io` peer dep to v10.1.
+  - Update `@bedrock/meter` peer dep to v5.2.1.
+
 ## 10.1.0 - 2022-11-16
 
 ### Changed
