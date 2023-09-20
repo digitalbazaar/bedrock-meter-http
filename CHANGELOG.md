@@ -4,6 +4,8 @@
 
 ### Changed
 - Use `@digitalbazaar/ed25519-signature-2020@5`.
+- **BREAKING**: Update peer deps:
+  - Use `@bedrock/jsonld-document-loader@4`. This version requires Node.js 18+.
 
 ## 11.0.0 - 2023-08-30
 
