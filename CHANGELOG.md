@@ -1,6 +1,6 @@
 # bedrock-meter-http ChangeLog
 
-## 12.0.0 - 2023-09-xx
+## 12.0.0 - 2023-09-20
 
 ### Changed
 - Use `@digitalbazaar/ed25519-signature-2020@5`.
