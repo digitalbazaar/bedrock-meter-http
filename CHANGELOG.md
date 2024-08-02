@@ -1,6 +1,6 @@
 # bedrock-meter-http ChangeLog
 
-## 13.0.0 - 2024-08-xx
+## 13.0.0 - 2024-08-02
 
 ### Changed
 - **BREAKING**: Update peer deps:
