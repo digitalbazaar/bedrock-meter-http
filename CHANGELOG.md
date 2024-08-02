@@ -1,5 +1,17 @@
 # bedrock-meter-http ChangeLog
 
+## 13.0.0 - 2024-08-xx
+
+### Changed
+- **BREAKING**: Update peer deps:
+  - `@bedrock/core@@6.1.3`
+  - `@bedrock/did-io@10.3.1`
+  - `@bedrock/express@8.3.1`
+  - `@bedrock/jsonld-document-loader@5.1.0`
+  - `@bedrock/meter@5.3.0`
+  - `@bedrock/zcap-storage@8.0.1`
+- Update regular, test, and dev dependencies.
+
 ## 12.1.0 - 2024-06-15
 
 ### Changed
