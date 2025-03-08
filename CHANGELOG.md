@@ -1,6 +1,6 @@
 # bedrock-meter-http ChangeLog
 
-## 14.0.0 - 2025-03-xx
+## 14.0.0 - 2025-03-07
 
 ### Changed
 - Update dependencies.
