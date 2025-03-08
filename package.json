@@ -1,6 +1,6 @@
 {
   "name": "@bedrock/meter-http",
-  "version": "14.0.0",
+  "version": "14.0.1-0",
   "type": "module",
   "description": "Bedrock Meter HTTP API",
   "main": "./lib/index.js",
