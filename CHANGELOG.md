@@ -1,5 +1,21 @@
 # bedrock-meter-http ChangeLog
 
+## 14.0.0 - 2025-03-xx
+
+### Changed
+- Update dependencies.
+  - `@digitalbazaar/ed25519-multikey@1.3.1`.
+- Update peer dependencies.
+  - `@bedrock/core@6.3.0`.
+  - `@bedrock/did-io@10.4.0`.
+  - `@bedrock/jsonld-document-loader@5.2.0`.
+  - **BREAKING**: `@bedrock/meter@6`.
+     - Updated for `@bedrock/mongodb@11`.
+  - **BREAKING**: `@bedrock/zcap-storage@9`.
+     - Updated for `@bedrock/mongodb@11`.
+- Update dev dependencies.
+- Update test dependencies.
+
 ## 13.0.0 - 2024-08-02
 
 ### Changed
